@@ -1,0 +1,209 @@
+-- Users table
+CREATE TABLE Users (
+    id INT NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    nationality VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    gender VARCHAR(10) NOT NULL,
+    cnic VARCHAR(255) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    dob VARCHAR(255) NOT NULL,
+    phone VARCHAR(255) NOT NULL,
+    fname VARCHAR(255) NOT NULL,
+    lname VARCHAR(255) NOT NULL,
+    type VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+-- Course table
+CREATE TABLE Course (
+    id VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    credits INT NOT NULL,
+    type VARCHAR(20) NOT NULL,
+    PRIMARY KEY (id)
+);
+
+-- Student table
+CREATE TABLE Student (
+    id INT NOT NULL,
+    department VARCHAR(255) NOT NULL,
+    degree VARCHAR(20) NOT NULL,
+    batch VARCHAR(20) NOT NULL,
+    section VARCHAR(1) NOT NULL,
+    semester INT NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id) REFERENCES Users(id)
+);
+
+-- Faculty table
+CREATE TABLE Faculty (
+    id INT NOT NULL,
+    position VARCHAR(255) NOT NULL,
+    qualification VARCHAR(255) NOT NULL,
+    pay INT NOT NULL,
+    experience INT NOT NULL,
+    joining_date VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (id) REFERENCES Users(id)
+);
+
+-- Attendance table
+CREATE TABLE Attendance (
+    course_id VARCHAR(255) NOT NULL,
+    student_id INT NOT NULL,
+    status VARCHAR(10) NOT NULL,
+    date VARCHAR(255) NOT NULL,
+    FOREIGN KEY (course_id) REFERENCES Course(id),
+    FOREIGN KEY (student_id) REFERENCES Student(id)
+);
+
+-- Transcript table
+CREATE TABLE Transcript (
+    student_id INT NOT NULL,
+    course_id VARCHAR(255) NOT NULL,
+    points FLOAT,
+	grade VARCHAR(10) NOT NULL,
+	semester INT NOT NULL,
+
+    PRIMARY KEY (course_id),
+    FOREIGN KEY (student_id) REFERENCES Student(id),
+    FOREIGN KEY (course_id) REFERENCES Course(id)
+);
+
+CREATE TABLE Marks(
+	student_id INT NOT NULL,
+	section VARCHAR(255) NOT NULL,
+	course_id VARCHAR(255) NOT NULL,
+	obtained INT,
+	total INT NOT NULL,
+	type VARCHAR(255),
+	id INT NOT NULL,
+	PRIMARY KEY(id),
+	FOREIGN KEY (student_id) REFERENCES Student(id),
+	FOREIGN KEY (course_id) REFERENCES Course(id)
+);
+
+CREATE TABLE Studies(
+	id INT NOT NULL,
+	student_id INT NOT NULL,
+	course_id VARCHAR(255) NOT NULL,
+	semester INT NOT NULL,
+	section VARCHAR(255),
+
+	PRIMARY KEY(id),
+	FOREIGN KEY(student_id) REFERENCES Student(id)
+
+);
+
+
+CREATE TABLE Teacher(
+	id INT NOT NULL,
+	type VARCHAR(255) NOT NULL,
+	qual VARCHAR(255) NOT NULL,
+	salary INT NOT NULL,
+	experience INT NOT NULL,
+	date VARCHAR(255) NOT NULL,
+
+	PRIMARY KEY(id),
+	FOREIGN KEY(id) REFERENCES Users(id)
+);
+
+
+CREATE TABLE Teaches_in(
+	id INT NOT NULL,
+	teacher_id INT NOT NULL,
+	course_id VARCHAR(255) NOT NULL,
+	section VARCHAR(255) NOT NULL,
+	batch INT NOT NULL,
+
+	PRIMARY KEY(id),
+	FOREIGN KEY(teacher_id) REFERENCES Teacher(id)
+
+);
+
+
+
+CREATE TABLE Feedback(
+
+	name VARCHAR(255)NOT NULL,
+	score FLOAT NOT NULL,
+	grade VARCHAR(255) NOT NULL,
+	comments VARCHAR(255) NOT NULL
+);
+
+
+
+
+BULK INSERT Student
+FROM 'C:\Users\hikn0\OneDrive\Desktop\data entry\Student.csv'
+WITH (
+	FIRSTROW = 1,
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '\n'
+);
+
+
+BULK INSERT Faculty
+FROM 'C:\Users\hikn0\OneDrive\Desktop\data entry\Faculty.csv'
+WITH (
+	FIRSTROW = 1,
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '\n'
+);
+
+BULK INSERT Marks
+FROM 'C:\Users\hikn0\OneDrive\Desktop\data entry\Marks.csv'
+WITH (
+	FIRSTROW = 2,
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '\n'
+);
+
+BULK INSERT Attendance
+FROM 'C:\Users\hikn0\OneDrive\Desktop\data entry\Attendance.csv'
+WITH (
+	FIRSTROW = 1,
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '\n'
+);
+
+BULK INSERT Course
+FROM 'C:\Users\hikn0\OneDrive\Desktop\data entry\Course.csv'
+WITH (
+	FIRSTROW = 1,
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '\n'
+);
+
+BULK INSERT Transcript
+FROM 'C:\Users\hikn0\OneDrive\Desktop\data entry\Transcript.csv'
+WITH (
+	FIRSTROW = 1,
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '\n'
+);
+
+BULK INSERT Teacher
+FROM 'C:\Users\hikn0\OneDrive\Desktop\data entry\Teacher.csv'
+WITH (
+	FIRSTROW = 1,
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '\n'
+);
+
+BULK INSERT Teaches_in
+FROM 'C:\Users\hikn0\OneDrive\Desktop\data entry\Teaches_in.csv'
+WITH (
+	FIRSTROW = 1,
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '\n'
+);
+
+BULK INSERT Studies
+FROM 'C:\Users\hikn0\OneDrive\Desktop\data entry\Studies.csv'
+WITH (
+	FIRSTROW = 1,
+    FIELDTERMINATOR = ',',
+    ROWTERMINATOR = '\n'
+);
